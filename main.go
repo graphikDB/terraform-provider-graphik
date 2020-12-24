@@ -168,6 +168,7 @@ func main() {
 				defer cancel()
 				host := data.Get("host").(string)
 				clientId := data.Get("client_id").(string)
+				clientSecret := data.Get("client_secret").(string)
 				username := data.Get("username").(string)
 				password := data.Get("password").(string)
 				metadataUri := data.Get("oidc_metadata_uri").(string)
@@ -182,7 +183,7 @@ func main() {
 				}
 				cfg := &oauth2.Config{
 					ClientID: clientId,
-					//ClientSecret: data.Get("client_secret").(string),
+					ClientSecret: clientSecret,
 					Endpoint: oauth2.Endpoint{
 						AuthURL:  metadata["authorization_endpoint"].(string),
 						TokenURL: metadata["token_endpoint"].(string),
