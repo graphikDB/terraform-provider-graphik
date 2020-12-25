@@ -2,4 +2,5 @@
 
 terraform provider for graphikDB schema operations
 
-*WORK IN PROGRESS*
+`git clone git@github.com:graphikDB/terraform-provider-graphik.git`
+
