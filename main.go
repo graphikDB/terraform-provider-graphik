@@ -23,66 +23,164 @@ func init() {
 
 func main() {
 	plugin.Serve(&plugin.ServeOpts{ProviderFunc: func() terraform.ResourceProvider {
-		return &schema.Provider{
-			Schema: map[string]*schema.Schema{
-				"host": {
-					Type:        schema.TypeString,
-					Required:    true,
-					DefaultFunc: schema.EnvDefaultFunc("GRAPHIK_HOST", nil),
-				},
-				"client_id": {
-					Type:        schema.TypeString,
-					Required:    true,
-					DefaultFunc: schema.EnvDefaultFunc("GRAPHIK_CLIENT_ID", nil),
-				},
-				"username": {
-					Type:        schema.TypeString,
-					Required:    true,
-					DefaultFunc: schema.EnvDefaultFunc("GRAPHIK_USERNAME", nil),
-				},
-				"password": {
-					Type:        schema.TypeString,
-					Required:    true,
-					DefaultFunc: schema.EnvDefaultFunc("GRAPHIK_PASSWORD", nil),
-				},
-				"oidc_metadata_uri": {
-					Type:        schema.TypeString,
-					Required:    true,
-					DefaultFunc: schema.EnvDefaultFunc("GRAPHIK_OPEN_ID_METADATA_URI", nil),
-				},
+		primarySchema := map[string]*schema.Schema{
+			"host": {
+				Type:        schema.TypeString,
+				Required:    true,
+				DefaultFunc: schema.EnvDefaultFunc("GRAPHIK_HOST", nil),
 			},
+			"client_id": {
+				Type:        schema.TypeString,
+				Required:    true,
+				DefaultFunc: schema.EnvDefaultFunc("GRAPHIK_CLIENT_ID", nil),
+			},
+			"username": {
+				Type:        schema.TypeString,
+				Required:    true,
+				DefaultFunc: schema.EnvDefaultFunc("GRAPHIK_USERNAME", nil),
+			},
+			"password": {
+				Type:        schema.TypeString,
+				Required:    true,
+				DefaultFunc: schema.EnvDefaultFunc("GRAPHIK_PASSWORD", nil),
+			},
+			"oidc_metadata_uri": {
+				Type:        schema.TypeString,
+				Required:    true,
+				DefaultFunc: schema.EnvDefaultFunc("GRAPHIK_OPEN_ID_METADATA_URI", nil),
+			},
+		}
+		indexSchema := map[string]*schema.Schema{
+			"name": {
+				Type:         schema.TypeString,
+				Required:     true,
+				Description:  "unique name of the index",
+				ValidateFunc: validation.StringIsNotEmpty,
+			},
+			"gtype": {
+				Type:         schema.TypeString,
+				Required:     true,
+				Description:  "replace me",
+				ValidateFunc: validation.StringIsNotEmpty,
+			},
+			"expression": {
+				Type:         schema.TypeString,
+				Required:     true,
+				Description:  "replace me",
+				ValidateFunc: validation.StringIsNotEmpty,
+			},
+			"target_docs": {
+				Type:        schema.TypeBool,
+				Required:    true,
+				Description: "replace me",
+			},
+			"target_connections": {
+				Type:        schema.TypeBool,
+				Required:    true,
+				Description: "replace me",
+			},
+		}
+		triggerSchema := map[string]*schema.Schema{
+			"name": {
+				Type:         schema.TypeString,
+				Required:     true,
+				Description:  "unique name of the index",
+				ValidateFunc: validation.StringIsNotEmpty,
+			},
+			"gtype": {
+				Type:         schema.TypeString,
+				Required:     true,
+				Description:  "replace me",
+				ValidateFunc: validation.StringIsNotEmpty,
+			},
+			"expression": {
+				Type:         schema.TypeString,
+				Required:     true,
+				Description:  "replace me",
+				ValidateFunc: validation.StringIsNotEmpty,
+			},
+			"trigger": {
+				Type:         schema.TypeString,
+				Required:     true,
+				Description:  "replace me",
+				ValidateFunc: validation.StringIsNotEmpty,
+			},
+			"target_docs": {
+				Type:        schema.TypeBool,
+				Required:    true,
+				Description: "replace me",
+			},
+			"target_connections": {
+				Type:        schema.TypeBool,
+				Required:    true,
+				Description: "replace me",
+			},
+		}
+		constraintSchema := map[string]*schema.Schema{
+			"name": {
+				Type:         schema.TypeString,
+				Required:     true,
+				Description:  "unique name of the index",
+				ValidateFunc: validation.StringIsNotEmpty,
+			},
+			"gtype": {
+				Type:         schema.TypeString,
+				Required:     true,
+				Description:  "replace me",
+				ValidateFunc: validation.StringIsNotEmpty,
+			},
+			"expression": {
+				Type:         schema.TypeString,
+				Required:     true,
+				Description:  "replace me",
+				ValidateFunc: validation.StringIsNotEmpty,
+			},
+			"target_docs": {
+				Type:        schema.TypeBool,
+				Required:    true,
+				Description: "replace me",
+			},
+			"target_connections": {
+				Type:        schema.TypeBool,
+				Required:    true,
+				Description: "replace me",
+			},
+		}
+		authorizerSchema := map[string]*schema.Schema{
+			"name": {
+				Type:         schema.TypeString,
+				Required:     true,
+				Description:  "unique name of the index",
+				ValidateFunc: validation.StringIsNotEmpty,
+			},
+			"method": {
+				Type:         schema.TypeString,
+				Required:     true,
+				Description:  "replace me",
+				ValidateFunc: validation.StringIsNotEmpty,
+			},
+			"expression": {
+				Type:         schema.TypeString,
+				Required:     true,
+				Description:  "replace me",
+				ValidateFunc: validation.StringIsNotEmpty,
+			},
+			"target_requests": {
+				Type:        schema.TypeBool,
+				Required:    true,
+				Description: "replace me",
+			},
+			"target_responses": {
+				Type:        schema.TypeBool,
+				Required:    true,
+				Description: "replace me",
+			},
+		}
+		return &schema.Provider{
+			Schema: primarySchema,
 			ResourcesMap: map[string]*schema.Resource{
 				"graphik_index": {
-					Schema: map[string]*schema.Schema{
-						"name": {
-							Type:         schema.TypeString,
-							Required:     true,
-							Description:  "unique name of the index",
-							ValidateFunc: validation.StringIsNotEmpty,
-						},
-						"gtype": {
-							Type:         schema.TypeString,
-							Required:     true,
-							Description:  "replace me",
-							ValidateFunc: validation.StringIsNotEmpty,
-						},
-						"expression": {
-							Type:         schema.TypeString,
-							Required:     true,
-							Description:  "replace me",
-							ValidateFunc: validation.StringIsNotEmpty,
-						},
-						"target_docs": {
-							Type:        schema.TypeBool,
-							Required:    true,
-							Description: "replace me",
-						},
-						"target_connections": {
-							Type:        schema.TypeBool,
-							Required:    true,
-							Description: "replace me",
-						},
-					},
+					Schema: indexSchema,
 					Create: func(data *schema.ResourceData, i interface{}) error {
 						ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 						defer cancel()
@@ -245,42 +343,7 @@ func main() {
 					Description:        "a graph primitive used for fast lookups of docs/connections that pass a boolean CEL expression",
 				},
 				"graphik_trigger": {
-					Schema: map[string]*schema.Schema{
-						"name": {
-							Type:         schema.TypeString,
-							Required:     true,
-							Description:  "unique name of the index",
-							ValidateFunc: validation.StringIsNotEmpty,
-						},
-						"gtype": {
-							Type:         schema.TypeString,
-							Required:     true,
-							Description:  "replace me",
-							ValidateFunc: validation.StringIsNotEmpty,
-						},
-						"expression": {
-							Type:         schema.TypeString,
-							Required:     true,
-							Description:  "replace me",
-							ValidateFunc: validation.StringIsNotEmpty,
-						},
-						"trigger": {
-							Type:         schema.TypeString,
-							Required:     true,
-							Description:  "replace me",
-							ValidateFunc: validation.StringIsNotEmpty,
-						},
-						"target_docs": {
-							Type:        schema.TypeBool,
-							Required:    true,
-							Description: "replace me",
-						},
-						"target_connections": {
-							Type:        schema.TypeBool,
-							Required:    true,
-							Description: "replace me",
-						},
-					},
+					Schema:         triggerSchema,
 					SchemaVersion:  0,
 					MigrateState:   nil,
 					StateUpgraders: nil,
@@ -454,36 +517,7 @@ func main() {
 					Description:        "used to automatically mutate the attributes of documents/connections before they are commited to the database",
 				},
 				"graphik_constraint": {
-					Schema: map[string]*schema.Schema{
-						"name": {
-							Type:         schema.TypeString,
-							Required:     true,
-							Description:  "unique name of the index",
-							ValidateFunc: validation.StringIsNotEmpty,
-						},
-						"gtype": {
-							Type:         schema.TypeString,
-							Required:     true,
-							Description:  "replace me",
-							ValidateFunc: validation.StringIsNotEmpty,
-						},
-						"expression": {
-							Type:         schema.TypeString,
-							Required:     true,
-							Description:  "replace me",
-							ValidateFunc: validation.StringIsNotEmpty,
-						},
-						"target_docs": {
-							Type:        schema.TypeBool,
-							Required:    true,
-							Description: "replace me",
-						},
-						"target_connections": {
-							Type:        schema.TypeBool,
-							Required:    true,
-							Description: "replace me",
-						},
-					},
+					Schema:         constraintSchema,
 					SchemaVersion:  0,
 					MigrateState:   nil,
 					StateUpgraders: nil,
@@ -649,36 +683,7 @@ func main() {
 					Description:        "a graph primitive used to validate custom doc/connection constraints",
 				},
 				"graphik_authorizer": {
-					Schema: map[string]*schema.Schema{
-						"name": {
-							Type:         schema.TypeString,
-							Required:     true,
-							Description:  "unique name of the index",
-							ValidateFunc: validation.StringIsNotEmpty,
-						},
-						"method": {
-							Type:         schema.TypeString,
-							Required:     true,
-							Description:  "replace me",
-							ValidateFunc: validation.StringIsNotEmpty,
-						},
-						"expression": {
-							Type:         schema.TypeString,
-							Required:     true,
-							Description:  "replace me",
-							ValidateFunc: validation.StringIsNotEmpty,
-						},
-						"target_requests": {
-							Type:        schema.TypeBool,
-							Required:    true,
-							Description: "replace me",
-						},
-						"target_responses": {
-							Type:        schema.TypeBool,
-							Required:    true,
-							Description: "replace me",
-						},
-					},
+					Schema:         authorizerSchema,
 					SchemaVersion:  0,
 					MigrateState:   nil,
 					StateUpgraders: nil,
