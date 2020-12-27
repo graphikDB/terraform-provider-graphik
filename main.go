@@ -10,44 +10,42 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
 	"github.com/hashicorp/terraform-plugin-sdk/plugin"
 	"github.com/hashicorp/terraform-plugin-sdk/terraform"
-	"github.com/joho/godotenv"
+	homedir "github.com/mitchellh/go-homedir"
 	"github.com/pkg/errors"
+	"github.com/spf13/viper"
 	"golang.org/x/oauth2"
 	"net/http"
+	"os"
 	"time"
 )
 
-func init() {
-	godotenv.Load()
-}
-
 func main() {
+	initConfig()
 	plugin.Serve(&plugin.ServeOpts{ProviderFunc: func() terraform.ResourceProvider {
 		primarySchema := map[string]*schema.Schema{
 			"host": {
 				Type:        schema.TypeString,
 				Required:    true,
-				DefaultFunc: schema.EnvDefaultFunc("GRAPHIK_HOST", nil),
+				Description: "host/endpoint of graphikDB instance",
+				DefaultFunc: func() (interface{}, error) {
+					return viper.Get("host"), nil
+				},
 			},
-			"client_id": {
+			"access_token": {
 				Type:        schema.TypeString,
 				Required:    true,
-				DefaultFunc: schema.EnvDefaultFunc("GRAPHIK_CLIENT_ID", nil),
+				Description: "oidc access token from identity provider",
+				DefaultFunc: func() (interface{}, error) {
+					return viper.Get("auth.access_token"), nil
+				},
 			},
-			"username": {
+			"open_id": {
 				Type:        schema.TypeString,
 				Required:    true,
-				DefaultFunc: schema.EnvDefaultFunc("GRAPHIK_USERNAME", nil),
-			},
-			"password": {
-				Type:        schema.TypeString,
-				Required:    true,
-				DefaultFunc: schema.EnvDefaultFunc("GRAPHIK_PASSWORD", nil),
-			},
-			"oidc_metadata_uri": {
-				Type:        schema.TypeString,
-				Required:    true,
-				DefaultFunc: schema.EnvDefaultFunc("GRAPHIK_OPEN_ID_METADATA_URI", nil),
+				Description: "open id connect metadata endpoint",
+				DefaultFunc: func() (interface{}, error) {
+					return viper.Get("auth.open_id"), nil
+				},
 			},
 		}
 		indexSchema := map[string]*schema.Schema{
@@ -842,20 +840,14 @@ func main() {
 					Importer: &schema.ResourceImporter{
 						State: schema.ImportStatePassthrough,
 					},
-					DeprecationMessage: "",
-					Timeouts:           nil,
-					Description:        "a graph primitive used for authorizing inbound requests and/or responses(see AuthTarget)",
+					Description: "a graph primitive used for authorizing inbound requests and/or responses(see AuthTarget)",
 				},
 			},
 			ConfigureFunc: func(data *schema.ResourceData) (interface{}, error) {
 				ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 				defer cancel()
 				host := data.Get("host").(string)
-				clientId := data.Get("client_id").(string)
-				clientSecret := data.Get("client_secret").(string)
-				username := data.Get("username").(string)
-				password := data.Get("password").(string)
-				metadataUri := data.Get("oidc_metadata_uri").(string)
+				metadataUri := data.Get("open_id").(string)
 				metadata := map[string]interface{}{}
 				resp, err := http.Get(metadataUri)
 				if err != nil {
@@ -865,23 +857,10 @@ func main() {
 				if err := json.NewDecoder(resp.Body).Decode(&metadata); err != nil {
 					return nil, errors.Wrap(err, "failed to get oidc metadata")
 				}
-				cfg := &oauth2.Config{
-					ClientID:     clientId,
-					ClientSecret: clientSecret,
-					Endpoint: oauth2.Endpoint{
-						AuthURL:  metadata["authorization_endpoint"].(string),
-						TokenURL: metadata["token_endpoint"].(string),
-					},
-					//RedirectURL: p.config.RedirectURL,
-					Scopes: []string{"openid", "email", "profile"},
-				}
-				token, err := cfg.PasswordCredentialsToken(ctx, username, password)
-				if err := json.NewDecoder(resp.Body).Decode(&metadata); err != nil {
-					return nil, errors.Wrap(err, "failed to get token")
-				}
-
 				client, err := graphik.NewClient(ctx, host,
-					graphik.WithTokenSource(oauth2.StaticTokenSource(token)),
+					graphik.WithTokenSource(oauth2.StaticTokenSource(&oauth2.Token{
+						AccessToken: data.Get("access_token").(string),
+					})),
 					graphik.WithRetry(2),
 				)
 				if err != nil {
@@ -915,4 +894,21 @@ func removeTrigger(i int, values []*apipb.Trigger) {
 	values[i] = values[len(values)-1]
 	values[len(values)-1] = nil
 	values = values[:len(values)-1]
+}
+
+func initConfig() {
+	if val := os.Getenv("GRAPHIKCTL_CONFIG"); val != "" {
+		viper.SetConfigFile(val)
+	} else {
+		// Find home directory.
+		home, err := homedir.Dir()
+		if err == nil {
+			// Search config in home directory with name ".graphikctl" (without extension).
+			viper.AddConfigPath(home)
+		}
+	}
+	viper.SetConfigName(".graphikctl")
+	viper.SetEnvPrefix("GRAPHIKCTL")
+	viper.AutomaticEnv() // read in environment variables that match
+	viper.ReadInConfig()
 }
