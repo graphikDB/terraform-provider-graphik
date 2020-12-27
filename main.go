@@ -28,7 +28,7 @@ func main() {
 				Required:    true,
 				Description: "host/endpoint of graphikDB instance",
 				DefaultFunc: func() (interface{}, error) {
-					return viper.Get("host"), nil
+					return viper.GetString("host"), nil
 				},
 			},
 			"access_token": {
@@ -36,7 +36,7 @@ func main() {
 				Required:    true,
 				Description: "oidc access token from identity provider",
 				DefaultFunc: func() (interface{}, error) {
-					return viper.Get("auth.access_token"), nil
+					return viper.GetString("auth.access_token"), nil
 				},
 			},
 			"open_id": {
@@ -44,7 +44,7 @@ func main() {
 				Required:    true,
 				Description: "open id connect metadata endpoint",
 				DefaultFunc: func() (interface{}, error) {
-					return viper.Get("auth.open_id"), nil
+					return viper.GetString("auth.open_id"), nil
 				},
 			},
 		}
