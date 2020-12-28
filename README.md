@@ -7,6 +7,23 @@ terraform provider for graphikDB schema operations
 
 ## Installation
 
+After installation, please move the binary to a location in which it may be discovered by terraform
+
+### Mac/Darwin
+
+```text
+curl -LJO https://github.com/graphikDB/terraform-provider-graphik/releases/download/v0.0.2/terraform-provider-graphik_darwin_amd64 && \
+    mv terraform-provider-graphik_darwin_amd64 terraform-provider-graphik && \
+    chmod +x terraform-provider-graphik
+```
+
+### Linux
+
+```text
+curl -LJO https://github.com/graphikDB/terraform-provider-graphik/releases/download/v0.0.2/terraform-provider-graphik_linux_amd64 && \
+    mv terraform-provider-graphik_darwin_amd64 terraform-provider-graphik && \
+    chmod +x terraform-provider-graphik
+```
 
 ## Example - Task application
 
