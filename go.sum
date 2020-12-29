@@ -253,6 +253,8 @@ github.com/graphikDB/graphik v0.11.4 h1:o5LyGLFV0iK1h3lVKQECWXkhzsjtd4yIsGGiv/zV
 github.com/graphikDB/graphik v0.11.4/go.mod h1:8fgucwEwubn3C1TQjKcFEvVtYn6784s/P5AGJXeBCg0=
 github.com/graphikDB/graphik v0.12.1 h1:J4SuA1ycqSdyB+pQ3CScL2D04VgUsagnbweZmQEEMdc=
 github.com/graphikDB/graphik v0.12.1/go.mod h1:PkgMXjsc1NozbbX9SOlWHwuh13g0GVAg1Ld094aRyzU=
+github.com/graphikDB/graphik v1.0.0 h1:25Og+A7bEK8ONDiryo4aRaixX+sGNePD6dMmscrdTt4=
+github.com/graphikDB/graphik v1.0.0/go.mod h1:PkgMXjsc1NozbbX9SOlWHwuh13g0GVAg1Ld094aRyzU=
 github.com/graphikDB/raft v0.0.0/go.mod h1:WIylhU9T0j6k0Ynh8RMb2PCvUYehlgCrTCTCusMLO6g=
 github.com/graphikDB/trigger v0.0.9/go.mod h1:p2sTQFJ/sLYUjWSwnoTOiFqCy7VMb1xujSaBaqzA77w=
 github.com/graphikDB/trigger v0.0.13/go.mod h1:RZn4pNk7i0xbur4PBtRR8L1IJedr1ll/mymrwY2M4dQ=

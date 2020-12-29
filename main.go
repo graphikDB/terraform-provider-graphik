@@ -194,22 +194,22 @@ func main() {
 							if a.GetName() == data.Get("name") {
 								has = true
 								values[i] = &apipb.Index{
-									Name:        data.Get("name").(string),
-									Gtype:       data.Get("gtype").(string),
-									Expression:  data.Get("expression").(string),
-									Docs:        data.Get("target_docs").(bool),
-									Connections: data.Get("target_connections").(bool),
+									Name:              data.Get("name").(string),
+									Gtype:             data.Get("gtype").(string),
+									Expression:        data.Get("expression").(string),
+									TargetDocs:        data.Get("target_docs").(bool),
+									TargetConnections: data.Get("target_connections").(bool),
 								}
 							}
 						}
 
 						if !has {
 							values = append(values, &apipb.Index{
-								Name:        data.Get("name").(string),
-								Gtype:       data.Get("gtype").(string),
-								Expression:  data.Get("expression").(string),
-								Docs:        data.Get("target_docs").(bool),
-								Connections: data.Get("target_connections").(bool),
+								Name:              data.Get("name").(string),
+								Gtype:             data.Get("gtype").(string),
+								Expression:        data.Get("expression").(string),
+								TargetDocs:        data.Get("target_docs").(bool),
+								TargetConnections: data.Get("target_connections").(bool),
 							})
 						}
 						if err := client.SetIndexes(ctx, &apipb.Indexes{Indexes: values}); err != nil {
@@ -237,10 +237,10 @@ func main() {
 								if err := data.Set("expression", a.GetExpression()); err != nil {
 									return err
 								}
-								if err := data.Set("target_connections", a.GetConnections()); err != nil {
+								if err := data.Set("target_connections", a.GetTargetConnections()); err != nil {
 									return err
 								}
-								if err := data.Set("target_docs", a.GetDocs()); err != nil {
+								if err := data.Set("target_docs", a.GetTargetDocs()); err != nil {
 									return err
 								}
 							}
@@ -262,22 +262,22 @@ func main() {
 							if a.GetName() == data.Get("name") {
 								has = true
 								values[i] = &apipb.Index{
-									Name:        data.Get("name").(string),
-									Gtype:       data.Get("gtype").(string),
-									Expression:  data.Get("expression").(string),
-									Docs:        data.Get("target_docs").(bool),
-									Connections: data.Get("target_connections").(bool),
+									Name:              data.Get("name").(string),
+									Gtype:             data.Get("gtype").(string),
+									Expression:        data.Get("expression").(string),
+									TargetDocs:        data.Get("target_docs").(bool),
+									TargetConnections: data.Get("target_connections").(bool),
 								}
 							}
 						}
 
 						if !has {
 							values = append(values, &apipb.Index{
-								Name:        data.Get("name").(string),
-								Gtype:       data.Get("gtype").(string),
-								Expression:  data.Get("expression").(string),
-								Docs:        data.Get("target_docs").(bool),
-								Connections: data.Get("target_connections").(bool),
+								Name:              data.Get("name").(string),
+								Gtype:             data.Get("gtype").(string),
+								Expression:        data.Get("expression").(string),
+								TargetDocs:        data.Get("target_docs").(bool),
+								TargetConnections: data.Get("target_connections").(bool),
 							})
 						}
 						if err := client.SetIndexes(ctx, &apipb.Indexes{Indexes: values}); err != nil {
@@ -299,11 +299,11 @@ func main() {
 							if a.GetName() == data.Get("name") {
 								index = i
 								indexes[i] = &apipb.Index{
-									Name:        data.Get("name").(string),
-									Gtype:       data.Get("gtype").(string),
-									Expression:  data.Get("expression").(string),
-									Docs:        data.Get("target_docs").(bool),
-									Connections: data.Get("target_connections").(bool),
+									Name:              data.Get("name").(string),
+									Gtype:             data.Get("gtype").(string),
+									Expression:        data.Get("expression").(string),
+									TargetDocs:        data.Get("target_docs").(bool),
+									TargetConnections: data.Get("target_connections").(bool),
 								}
 							}
 						}
