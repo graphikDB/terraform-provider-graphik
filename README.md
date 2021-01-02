@@ -12,7 +12,7 @@ After installation, please move the binary to a location in which it may be disc
 ### Mac/Darwin
 
 ```text
-curl -LJO https://github.com/graphikDB/terraform-provider-graphik/releases/download/v0.1.0/terraform-provider-graphik_darwin_amd64 && \
+curl -LJO https://github.com/graphikDB/terraform-provider-graphik/releases/download/v0.1.1/terraform-provider-graphik_darwin_amd64 && \
     mv terraform-provider-graphik_darwin_amd64 terraform-provider-graphik && \
     chmod +x terraform-provider-graphik
 ```
@@ -20,7 +20,7 @@ curl -LJO https://github.com/graphikDB/terraform-provider-graphik/releases/downl
 ### Linux
 
 ```text
-curl -LJO https://github.com/graphikDB/terraform-provider-graphik/releases/download/v0.1.0/terraform-provider-graphik_linux_amd64 && \
+curl -LJO https://github.com/graphikDB/terraform-provider-graphik/releases/download/v0.1.1/terraform-provider-graphik_linux_amd64 && \
     mv terraform-provider-graphik_darwin_amd64 terraform-provider-graphik && \
     chmod +x terraform-provider-graphik
 ```

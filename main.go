@@ -91,12 +91,6 @@ func main() {
 				Description:  "replace me",
 				ValidateFunc: validation.StringIsNotEmpty,
 			},
-			"expression": {
-				Type:         schema.TypeString,
-				Required:     true,
-				Description:  "replace me",
-				ValidateFunc: validation.StringIsNotEmpty,
-			},
 			"trigger": {
 				Type:         schema.TypeString,
 				Required:     true,
@@ -362,7 +356,6 @@ func main() {
 								values[i] = &apipb.Trigger{
 									Name:              data.Get("name").(string),
 									Gtype:             data.Get("gtype").(string),
-									Expression:        data.Get("expression").(string),
 									Trigger:           data.Get("trigger").(string),
 									TargetDocs:        data.Get("target_docs").(bool),
 									TargetConnections: data.Get("target_connections").(bool),
@@ -374,7 +367,6 @@ func main() {
 							values = append(values, &apipb.Trigger{
 								Name:              data.Get("name").(string),
 								Gtype:             data.Get("gtype").(string),
-								Expression:        data.Get("expression").(string),
 								Trigger:           data.Get("trigger").(string),
 								TargetDocs:        data.Get("target_docs").(bool),
 								TargetConnections: data.Get("target_connections").(bool),
@@ -400,9 +392,6 @@ func main() {
 									return err
 								}
 								if err := data.Set("gtype", a.GetGtype()); err != nil {
-									return err
-								}
-								if err := data.Set("expression", a.GetExpression()); err != nil {
 									return err
 								}
 								if err := data.Set("trigger", a.GetTrigger()); err != nil {
@@ -435,7 +424,6 @@ func main() {
 								values[i] = &apipb.Trigger{
 									Name:              data.Get("name").(string),
 									Gtype:             data.Get("gtype").(string),
-									Expression:        data.Get("expression").(string),
 									Trigger:           data.Get("trigger").(string),
 									TargetDocs:        data.Get("target_docs").(bool),
 									TargetConnections: data.Get("target_connections").(bool),
@@ -447,7 +435,6 @@ func main() {
 							values = append(values, &apipb.Trigger{
 								Name:              data.Get("name").(string),
 								Gtype:             data.Get("gtype").(string),
-								Expression:        data.Get("expression").(string),
 								Trigger:           data.Get("trigger").(string),
 								TargetDocs:        data.Get("target_docs").(bool),
 								TargetConnections: data.Get("target_connections").(bool),
@@ -474,7 +461,6 @@ func main() {
 								triggers[i] = &apipb.Trigger{
 									Name:              data.Get("name").(string),
 									Gtype:             data.Get("gtype").(string),
-									Expression:        data.Get("expression").(string),
 									Trigger:           data.Get("trigger").(string),
 									TargetDocs:        data.Get("target_docs").(bool),
 									TargetConnections: data.Get("target_connections").(bool),
